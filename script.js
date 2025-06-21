@@ -2,27 +2,26 @@ let imagenActual = 0;
 let imagenes = [];
 let piesDeFoto = [];
 let distritoSeleccionado = "";
-let distritosActivos = ["quilmes", "la-matanza"]; // ✅ ← Agregá aquí los que tengan imágenes
 
-// Cargar el mapa SVG
+// Cargar el mapa SVG dentro del contenedor
 fetch("mapa/buenos-aires.svg")
   .then(res => res.text())
   .then(svg => {
     document.getElementById("mapa-container").innerHTML = svg;
 
-    // Colorear y activar solo los distritos con imágenes
-    distritosActivos.forEach(distrito => {
-      const path = document.getElementById(distrito);
-      if (path) {
-        path.classList.add("activo");
-        path.addEventListener("click", () => {
-          distritoSeleccionado = path.id;
-          cargarGaleria(distritoSeleccionado);
-        });
-      }
+    // Agregar eventos a cada path del SVG
+    document.querySelectorAll("svg path").forEach(path => {
+      path.addEventListener("click", () => {
+        distritoSeleccionado = path.id;
+        cargarGaleria(distritoSeleccionado);
+      });
     });
+  })
+  .catch(err => {
+    console.error("No se pudo cargar el mapa SVG:", err);
   });
 
+// Cargar galería de imágenes para un distrito
 async function cargarGaleria(distrito) {
   try {
     const textoRes = await fetch("data/textos.json");
@@ -43,14 +42,15 @@ async function cargarGaleria(distrito) {
 
     imagenActual = 0;
     mostrarImagen();
-    document.getElementById("nombre-distrito").innerText = distrito.replace("-", " ");
+    document.getElementById("nombre-distrito").innerText = distrito.replaceAll("-", " ");
     document.getElementById("modal").classList.remove("hidden");
 
   } catch (err) {
-    console.error("Error al cargar galería:", err);
+    console.error("Error al cargar la galería:", err);
   }
 }
 
+// Mostrar una imagen en el carrusel
 function mostrarImagen() {
   const img = document.getElementById("imagen-carrusel");
   const pie = document.getElementById("pie-de-foto");
@@ -59,6 +59,7 @@ function mostrarImagen() {
   pie.innerText = piesDeFoto[imagenActual] || "Sin descripción";
 }
 
+// Navegación del carrusel
 document.getElementById("cerrar").addEventListener("click", () => {
   document.getElementById("modal").classList.add("hidden");
 });

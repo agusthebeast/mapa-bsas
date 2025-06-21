@@ -12,15 +12,16 @@ body {
 }
 
 svg path {
-  fill: #ddd;
-  stroke: #333;
+  fill: #a020f0; /* violeta */
+  stroke: white;
   cursor: pointer;
   transition: 0.2s;
 }
 
 svg path:hover {
-  fill: #aaa;
+  fill: #7a00cc; /* violeta más oscuro al pasar el mouse */
 }
+
 
 #modal {
   position: fixed;
@@ -76,20 +77,4 @@ svg path:hover {
 
 .hidden {
   display: none;
-}
-
-svg path {
-  fill: #ddd;
-  stroke: #333;
-  cursor: default;
-  transition: 0.2s;
-}
-
-svg path.activo {
-  fill: #753BBD;
-  cursor: pointer;
-}
-
-svg path.activo:hover {
-  fill: #a075d1;
 }

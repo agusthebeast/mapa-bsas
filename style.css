@@ -77,3 +77,19 @@ svg path:hover {
 .hidden {
   display: none;
 }
+
+svg path {
+  fill: #ddd;
+  stroke: #333;
+  cursor: default;
+  transition: 0.2s;
+}
+
+svg path.activo {
+  fill: #753BBD;
+  cursor: pointer;
+}
+
+svg path.activo:hover {
+  fill: #a075d1;
+}

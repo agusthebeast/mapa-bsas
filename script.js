@@ -2,6 +2,7 @@ let imagenActual = 0;
 let imagenes = [];
 let piesDeFoto = [];
 let distritoSeleccionado = "";
+let distritosActivos = ["quilmes", "la-matanza"]; // ✅ ← Agregá aquí los que tengan imágenes
 
 // Cargar el mapa SVG
 fetch("mapa/buenos-aires.svg")
@@ -9,12 +10,16 @@ fetch("mapa/buenos-aires.svg")
   .then(svg => {
     document.getElementById("mapa-container").innerHTML = svg;
 
-    // Agregar eventos a los paths
-    document.querySelectorAll("svg path").forEach(path => {
-      path.addEventListener("click", () => {
-        distritoSeleccionado = path.id;
-        cargarGaleria(distritoSeleccionado);
-      });
+    // Colorear y activar solo los distritos con imágenes
+    distritosActivos.forEach(distrito => {
+      const path = document.getElementById(distrito);
+      if (path) {
+        path.classList.add("activo");
+        path.addEventListener("click", () => {
+          distritoSeleccionado = path.id;
+          cargarGaleria(distritoSeleccionado);
+        });
+      }
     });
   });
 
@@ -38,7 +43,7 @@ async function cargarGaleria(distrito) {
 
     imagenActual = 0;
     mostrarImagen();
-    document.getElementById("nombre-distrito").innerText = distrito;
+    document.getElementById("nombre-distrito").innerText = distrito.replace("-", " ");
     document.getElementById("modal").classList.remove("hidden");
 
   } catch (err) {
